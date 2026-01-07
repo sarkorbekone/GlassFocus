@@ -97,7 +97,7 @@ body:has(input[value="dim"]:checked) {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 20px 0 20px;
+    padding: 35px 20px 0 20px;
     max-width: 650px;
     margin: 0 auto;
     gap: 10px;
