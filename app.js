@@ -4,7 +4,7 @@
 // ====================
 
 
-injectSpeedInsights();
+
 // ===== STATE MANAGEMENT =====
 const STATE = {
     todos: [],
