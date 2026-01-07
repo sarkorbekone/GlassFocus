@@ -461,7 +461,7 @@ body:has(input[value="dim"]:checked) {
     margin-bottom: 20px;
     position: sticky;
     top: 0;
-    background: var(--c-bg);
+    background: transparent;
     padding: 10px 0;
     z-index: 10;
 }
