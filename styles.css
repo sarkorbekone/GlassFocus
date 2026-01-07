@@ -787,7 +787,7 @@ input:checked + .toggle-slider:before {
 /* ===== iOS SAFE AREA ===== */
 @supports (padding-top: env(safe-area-inset-top)) {
     .progress-container {
-        top: env(safe-area-inset-top);
+        top: 0;
     }
     .header-container {
         padding-top: max(24px, calc(env(safe-area-inset-top) + 24px));
