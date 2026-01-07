@@ -2,7 +2,7 @@
 // GlassFocus App v2.0
 // Complete JavaScript
 // ====================
-import { injectSpeedInsights } from '@vercel/speed-insights';
+
 
 injectSpeedInsights();
 // ===== STATE MANAGEMENT =====
