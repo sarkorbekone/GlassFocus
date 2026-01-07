@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GlassFocus - Focus & Grow</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#152433">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="GlassFocus">
+    <meta name="description" content="A gamified productivity app with tasks, books, and streaks tracking">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23152433'/><path d='M30 50 L45 65 L70 35' stroke='%2303d5ff' stroke-width='8' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Header Area -->
+    <div class="header-container">
+        <div class="header-left">
+            <button class="install-btn" id="installBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Install
+            </button>
+            <button class="glass-surface action-btn" id="statsBtn" title="View Analytics">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+            </button>
+            <button class="glass-surface action-btn" id="booksBtn" title="Reading List">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="header-right">
+            <button class="glass-surface action-btn" id="settingsBtn" title="Settings">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6"/>
+                </svg>
+                <span class="notification-badge" id="notificationBadge" style="display: none;"></span>
+            </button>
+            <button class="glass-surface action-btn" id="archiveBtn" title="View Archive">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/>
+                </svg>
+            </button>
+            <div class="switcher glass-surface" c-previous="1" id="themeSwitcher">
+                <label class="switcher__option" title="Light">
+                    <input type="radio" name="theme" value="light" c-option="1" class="switcher__input">
+                    <span class="switcher__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg></span>
+                </label>
+                <label class="switcher__option" title="Dark">
+                    <input type="radio" name="theme" value="dark" c-option="2" class="switcher__input">
+                    <span class="switcher__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+                </label>
+                <label class="switcher__option" title="Dim">
+                    <input type="radio" name="theme" value="dim" c-option="3" class="switcher__input">
+                    <span class="switcher__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/></svg></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Area with Streaks -->
+    <div class="stats-container">
+        <div class="stat-card glass-surface">
+            <span class="stat-label">Remaining</span>
+            <span class="stat-value" id="statRemaining">0</span>
+        </div>
+        <div class="stat-card glass-surface">
+            <span class="stat-label">Completed</span>
+            <span class="stat-value" id="statCompleted">0</span>
+        </div>
+        <div class="stat-card glass-surface streak-card">
+            <span class="stat-label">Streak</span>
+            <span class="stat-value streak" id="statStreak">0</span>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container">
+        <h1 class="app-title">Today's Focus</h1>
+        <ul id="todoList" style="list-style: none;"></ul>
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <p>All clear for today! 🎉</p>
+        </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="input-area">
+        <form class="input-form glass-surface" id="todoForm">
+            <input type="text" class="todo-input" id="todoInput" placeholder="New task..." autocomplete="off">
+            <button type="submit" class="add-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+            </button>
+        </form>
+    </div>
+
+    <!-- Indicators -->
+    <div class="offline-indicator" id="offlineIndicator">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        Working offline
+    </div>
+    <div class="success-toast" id="successToast">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="toastMessage">Success!</span>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="archiveModal">
+        <div class="modal-header">
+            <h2>📦 Archive</h2>
+            <button class="glass-surface action-btn" onclick="closeModal('archiveModal')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="modal-content" id="archiveContent"></div>
+    </div>
+
+    <div class="modal" id="settingsModal">
+        <div class="modal-header">
+            <h2>⚙️ Settings</h2>
+            <button class="glass-surface action-btn" onclick="closeModal('settingsModal')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="modal-content">
+            <div class="settings-section">
+                <h3>Notifications</h3>
+                <div class="setting-item glass-surface">
+                    <div class="setting-label">
+                        <div class="setting-label-title">Enable Notifications</div>
+                        <div class="setting-label-desc">Get reminded 4 hours before day ends</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notificationsToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="settings-section">
+                <h3>Tasks</h3>
+                <div class="setting-item glass-surface">
+                    <div class="setting-label">
+                        <div class="setting-label-title">Auto-Archive Old Tasks</div>
+                        <div class="setting-label-desc">Move incomplete tasks to archive daily</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="autoArchiveToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="settings-section">
+                <h3>Support Development</h3>
+                <div class="setting-item glass-surface" style="flex-direction: column; align-items: flex-start; gap: 12px;">
+                    <div class="setting-label">
+                        <div class="setting-label-title">Enjoying GlassFocus?</div>
+                        <div class="setting-label-desc">Support the developer with a coffee ☕</div>
+                    </div>
+                    <a href="https://buymeacoffee.com/sarkorbekoy" target="_blank" class="coffee-btn">
+                        <span style="font-size: 1.4rem;">☕</span>
+                        Buy me a coffee
+                    </a>
+                </div>
+            </div>
+            <div class="settings-section">
+                <h3>About</h3>
+                <div class="setting-item glass-surface" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                    <div class="setting-label-title">GlassFocus v2.0</div>
+                    <div class="setting-label-desc">A beautiful productivity app with tasks, books, and streaks tracking</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="booksModal">
+        <div class="modal-header">
+            <h2>📚 Reading List</h2>
+            <button class="glass-surface action-btn" onclick="closeModal('booksModal')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="modal-content">
+            <div class="input-form glass-surface" style="margin-bottom: 20px; padding: 10px 10px 10px 16px;">
+                <input type="text" class="todo-input" id="bookInput" placeholder="Add a book..." autocomplete="off">
+                <button onclick="addBook()" class="add-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+            </div>
+            <div class="stats-container" style="padding: 0; margin-bottom: 20px;">
+                <div class="stat-card glass-surface">
+                    <span class="stat-label">Reading</span>
+                    <span class="stat-value" id="booksReading">0</span>
+                </div>
+                <div class="stat-card glass-surface">
+                    <span class="stat-label">Completed</span>
+                    <span class="stat-value" id="booksCompleted">0</span>
+                </div>
+                <div class="stat-card glass-surface">
+                    <span class="stat-label">This Year</span>
+                    <span class="stat-value" id="booksThisYear">0</span>
+                </div>
+            </div>
+            <div id="booksList"></div>
+            <div id="emptyBooksState" class="empty-state" style="display: none;">
+                <p>No books yet. Start your reading journey! 📖</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="statsModal">
+        <div class="modal-header">
+            <h2>📊 Analytics</h2>
+            <button class="glass-surface action-btn" onclick="closeModal('statsModal')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="modal-content">
+            <div class="stats-grid">
+                <div class="analytics-card glass-surface">
+                    <div class="analytics-card-value" id="totalTasksCompleted">0</div>
+                    <div class="analytics-card-label">Tasks Done</div>
+                </div>
+                <div class="analytics-card glass-surface">
+                    <div class="analytics-card-value streak" id="currentStreak">0</div>
+                    <div class="analytics-card-label">Day Streak 🔥</div>
+                </div>
+                <div class="analytics-card glass-surface">
+                    <div class="analytics-card-value" id="totalBooks">0</div>
+                    <div class="analytics-card-label">Books Read 📚</div>
+                </div>
+            </div>
+            <div class="chart-section">
+                <h3>Last 7 Days Tasks</h3>
+                <div class="simple-chart glass-surface">
+                    <div class="chart-bars" id="weeklyChart"></div>
+                </div>
+            </div>
+            <div class="chart-section">
+                <h3>Monthly Overview</h3>
+                <div class="simple-chart glass-surface">
+                    <div class="chart-bars" id="monthlyChart"></div>
+                </div>
+            </div>
+            <div class="chart-section">
+                <h3>🏆 Achievements</h3>
+                <div class="stats-container" style="padding: 0;">
+                    <div class="stat-card glass-surface">
+                        <span class="stat-label">Best Streak</span>
+                        <span class="stat-value" id="bestStreak">0</span>
+                    </div>
+                    <div class="stat-card glass-surface">
+                        <span class="stat-label">Productive Days</span>
+                        <span class="stat-value" id="productiveDays">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
